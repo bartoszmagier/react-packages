@@ -5,6 +5,7 @@ import type { RSAAction } from 'redux-api-middleware';
 export type State = {
   authToken: ?string,
   refreshToken: ?string,
+  expirationDate: ?number,
 };
 
 export type AuthMiddlewareConfig = {
@@ -15,19 +16,32 @@ export type AnyAction = {
   type: string,
 };
 
-export type RefreshMiddlewareConfig = {
+export type MiddlewareConfig = {
+  authConfig: AuthConfig,
+  refreshConfig?: RefreshConfig,
+};
+
+export type AuthConfig = {
   header: string,
+  type: string,
+};
+
+export type RefreshConfig = {
   endpoint: string,
   failedAction: AnyAction,
 };
 
 export type SetTokenAction = {
   type: string,
-  payload: {
-    authToken: ?string,
-    refreshToken: ?string,
-  },
+  payload: TokenPayload,
 };
+
+export type TokenPayload = {
+  authToken: ?string,
+  refreshToken: ?string,
+};
+
+export type GetExpirationTimestamp = TokenPayload => number;
 
 export type GetState = () => State;
 export type Action = RSAAction<any, any, any> | AnyAction;
